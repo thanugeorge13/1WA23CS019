@@ -1,0 +1,73 @@
+#include <stdio.h>
+#define N 50
+void enqueue(int *queue, int *rear, int item);
+int dequeue(int *queue, int *front, int *rear);
+void display(int *queue, int front, int rear);
+
+void main() {
+    int queue[N]; 
+    int front = -1, rear = -1, choice, item;
+    do {
+        printf("1. Insert (Enqueue)\n2. Delete (Dequeue)\n3. Display\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter the item to insert: ");
+                scanf("%d", &item);
+                enqueue(queue, &rear, item);
+                if (front == -1) front = 0; 
+                break;
+            case 2:
+                item = dequeue(queue, &front, &rear);
+                if (item != -1) {
+                    printf("Dequeued item: %d\n", item);
+                }
+                break;
+            case 3:
+                display(queue, front, rear);
+                break;
+            case 4:
+                printf("Exit\n");
+                break;
+            default:
+                printf("Invalid choice.\n");
+        }
+    } while (choice != 4);
+}
+
+void enqueue(int *queue, int *rear, int item) {
+    if (*rear >= N - 1) 
+        printf("Overflow");
+    else {
+        if (*rear == -1) *rear = 0;
+        else (*rear)++;
+        queue[*rear] = item;
+    }
+}
+
+int dequeue(int *queue, int *front, int *rear) {
+    if (*front == -1 || *front > *rear) { 
+        printf("Queue is empty!\n");
+        return -1; 
+    }else {
+        int item = queue[*front];
+        if (*front == *rear) { 
+            *front = -1;
+            *rear = -1;
+        } else (*front)++;
+        return item;
+    }
+}
+
+void display(int *queue, int front, int rear) {
+    if (front == -1) { 
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue elements: ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+}
